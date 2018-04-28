@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.brickgit.mapgeneratorgdx.algorithms.BreadthFirstSearch;
+import com.brickgit.mapgeneratorgdx.algorithms.DijkstrasAlgorithm;
 import com.brickgit.mapgeneratorgdx.algorithms.Map;
 import com.brickgit.mapgeneratorgdx.utils.Config;
 import com.brickgit.mapgeneratorgdx.utils.MapPoint;
@@ -13,13 +13,13 @@ import com.brickgit.mapgeneratorgdx.utils.MapPoint;
 import java.util.List;
 
 /**
- * Created by Daniel Lin on 15/04/2018.
+ * Created by Daniel Lin on 28/04/2018.
  */
 
-public class BfsDrawer extends BaseDrawer {
+public class DijkstrasDrawer extends BaseDrawer {
 
     private Map map;
-    private BreadthFirstSearch bfs;
+    private DijkstrasAlgorithm da;
     private MapPoint handlingPosition;
     private Texture handlingArea;
 
@@ -28,26 +28,26 @@ public class BfsDrawer extends BaseDrawer {
 
     private boolean isAllFinish = false;
 
-    public BfsDrawer() {
+    public DijkstrasDrawer() {
         map = new Map();
         map.generateMap();
-        bfs = new BreadthFirstSearch(map);
+        da = new DijkstrasAlgorithm(map);
 
         createGrayArea();
     }
 
     @Override
     public void draw(Batch batch) {
-        drawMapAndBfs(batch);
+        drawMapAndDa(batch);
     }
 
     public void drawStepByStep(Batch batch) {
         if (isAllFinish) return;
 
-        if (!bfs.isFinished()) {
-            handlingPosition = bfs.searchStepByStep();
+        if (!da.isFinished()) {
+            handlingPosition = da.searchStepByStep();
         } else if (path == null) {
-            path = bfs.getPath();
+            path = da.getPath();
         } else if (heroPositionIndex < path.size() - 1) {
             heroPositionIndex++;
         } else {
@@ -55,7 +55,7 @@ public class BfsDrawer extends BaseDrawer {
         }
     }
 
-    private void drawMapAndBfs(Batch batch) {
+    private void drawMapAndDa(Batch batch) {
         int originX = Config.WINDOW_WIDTH / 2 - map.getSize() / 2 * sizeWall;
         int originY = Config.WINDOW_HEIGHT / 2 - map.getSize() / 2 * sizeWall;
         int drawingX = originX;
@@ -81,7 +81,7 @@ public class BfsDrawer extends BaseDrawer {
                             drawHandlingPosition(batch, drawingX, drawingY);
                         }
 
-                        int cost = bfs.getCost(position);
+                        int cost = da.getCost(position);
                         if (cost < Integer.MAX_VALUE) {
                             drawCost(batch, cost, drawingX, drawingY,
                                     (path != null && path.contains(position)));

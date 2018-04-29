@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.brickgit.mapgeneratorgdx.actors.AStarDrawer;
 import com.brickgit.mapgeneratorgdx.actors.BfsDrawer;
 import com.brickgit.mapgeneratorgdx.actors.DfsDrawer;
 import com.brickgit.mapgeneratorgdx.actors.DijkstrasDrawer;
@@ -77,6 +78,16 @@ public class MenuScreen extends BaseScreen {
             }
         });
         table.add(btnDijkstras).width(200);
+        table.row();
+
+        TextButton btnAStar = new TextButton("A* Algorithm", Assets.getSkin(), "colored");
+        btnAStar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                openScreen(new DrawerScreen(new AStarDrawer()));
+            }
+        });
+        table.add(btnAStar).width(200);
         table.row();
 
         stage.addActor(table);

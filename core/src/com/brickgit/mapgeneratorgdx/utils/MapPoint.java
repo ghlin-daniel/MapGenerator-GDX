@@ -43,11 +43,12 @@ public class MapPoint {
     }
 
     public double getDistance(MapPoint mp) {
-        int distanceX = x - mp.x;
-        int distanceY = y - mp.y;
+        double distanceX = x - mp.x;
+        double distanceY = y - mp.y;
         return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
     }
 
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof MapPoint)) {
             return super.equals(object);
@@ -58,6 +59,7 @@ public class MapPoint {
         }
     }
 
+    @Override
     public String toString() {
         return this.getClass().getName() + " (" + this.x + ", " + this.y + ")";
     }
